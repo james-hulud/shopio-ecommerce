@@ -1,0 +1,98 @@
+{% extends "base.html" %} {% block title %} Checkout {% endblock %}
+
+{% block content %}
+    <div class="container-fluid text-center">
+        <h1 class="text-secondary text-left">Checkout</h1>
+        <div class="row my-4 border-top m-2 justify-content-center">
+            <h1 class="text-secondary py-3">Your basket</h1>
+            <div class="d-flex justify-content-center align-content-center">
+                {% set total_list = [] %}
+                {% for item in basket %}
+                    <div class="container-fluid text-secondary m-1 p-0">
+                        <a href="products/{{ item[0] }}">
+                            <img
+                            class="w-100 h-auto rounded-1"
+                            style="max-width: 25vw;"
+                            src="{{ url_for('static', filename='imgs/' + item[2]) }}"
+                            alt="Product image"
+                            >
+                        </a>
+                        {% set item_total = session['quantity{}'.format(item[0])] | float * item[3] | float %}
+                        {% set total_list_item = {'cost': item_total} %}
+                        {% do total_list.append(total_list_item) %}
+                        <h4>Name: {{ item[1] }}</h4>
+                        <h4>Qty: {{ session['quantity{}'.format(item[0])] }}</h4>
+                        <h4>Total: £{{ item_total }}</h4>
+                    </div>
+                {% endfor %}
+                {% set order_total = total_list | sum(attribute='cost') %}
+            </div>
+            <div class="text-primary-emphasis d-flex flex-column border-top pt-4">
+                <h2>Order total</h2>
+                <h2 style="font-weight: bold;">£{{ order_total }}</h2>
+            </div>
+        </div>
+
+        <div class="row border-top justify-content-center m-2 text-secondary">
+            <h1 class="p-3">Delivery address</h1>
+            <div class="mb-3" style="padding-left: 30%; padding-right: 30%;">
+                {% if user_address %}
+                    <div>
+                        <h4>
+                            <ul class="list-unstyled">
+                                <li>{{ user_address.full_name }}</li>
+                                <li>{{ user_address.phone_number }}</li>
+                                <li>{{ user_address.postcode }}</li>
+                                <li>{{ user_address.address_line_one }}</li>
+                                <li>{{ user_address.address_line_two }}</li>
+                                <li>{{ user_address.town_city }}</li>
+                                <li>{{ user_address.county }}</li>
+                            </ul>
+                        </h4>
+                        <form id="address_set" action="/checkout" method="POST">
+                            {{ edit_address_form.hidden_tag() }}
+                            <input type="hidden" name="form_id" value="{{ edit_address_form.form_id }}">
+                            {{ edit_address_form.submit(class_='btn btn-outline-primary') }}
+                        </form>
+                    </div>
+                {% else %}
+                    <div>{{ wtf.quick_form(address_form, button_map={'submit': 'btn btn-outline-primary'}) }}</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row border-top justify-content-center m-2 text-secondary">
+            <h1 class="p-3">Payment method</h1>
+            <div class="mb-3" style="padding-left: 30%; padding-right: 30%;">
+                {% if user_payment_details %}
+                    <div>
+                        <h4>
+                            <ul class="list-unstyled">
+                                <li>Card ending in {{ user_payment_details.card_number[-4:] }}</li>
+                                <li>Name on card: {{ user_payment_details.name_on_card }}</li>
+                                <li>Expiry date: {{ user_payment_details.expiry_date[0:2] }}/{{ user_payment_details.expiry_date[2:] }}</li>
+                            </ul>
+                        </h4>
+                        <form id="payment_set" action="/checkout" method="POST">
+                            {{ edit_payment_form.hidden_tag() }}
+                            <input type="hidden" name="form_id" value="{{ edit_payment_form.form_id }}">
+                            {{ edit_payment_form.submit(class_='btn btn-outline-primary') }}
+                        </form>
+                    </div>
+                {% else %}
+                    <div>{{ wtf.quick_form(payment_form, button_map={'submit': 'btn btn-outline-primary'}) }}</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row border-top justify-content-center m-2">
+            <div class="text-primary-emphasis d-flex flex-column py-4">
+                <h2>Order total</h2>
+                <h2 style="font-weight: bold;">£{{ order_total }}</h2>
+            </div>
+            <div class="container-fluid mb-3">
+                <script src="{{ url_for('static', filename='js/payment.js' ) }}"></script>
+            </div>
+        </div>
+    </div>
+{% endblock %}
