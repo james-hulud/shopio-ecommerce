@@ -42,7 +42,7 @@ _The checkout page where users can complete their order._
 1. Clone this repository to your local machine:
 
    ```bash
-   git clone https://github.com/yourusername/shopio.git
+    https://github.com/james-hulud/shopio-ecommerce.git
    ```
 
 2. Setup a virtual environment and install dependencies
