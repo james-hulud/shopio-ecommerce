@@ -1,0 +1,46 @@
+{% extends "base.html" %} {% block title %} Home - SHOPIO {% endblock %}
+
+{% block content %}
+    <div class="container-fluid text-center">
+        <div class="row my-4">
+            {% for item in items %}
+                <div class="col-6 mb-4">
+                    <div class="row justify-content-center mx-1">
+                        <h3 class="text-secondary">{{ item.name }}</h3>
+                        <div class="image-container__block shadow-lg rounded-1">
+                            <a class="d-block" href="/products/{{ item.id }}">
+                                <img
+                                    class="img-fluid"
+                                    src="{{ url_for('static', filename='imgs/' + item.image) }}"
+                                    alt="Product image"
+                                />
+                            </a>
+                        </div>
+
+                        <div class="col my-3 text-primary">
+                            <form action="{{ url_for('galleryPage' ) }}" method="POST">
+                                <input type="hidden" name="item_data" value="{{ item.id }},{{ item.name }},{{ item.image }},{{ item.price }},{{ item.env_impact }}">
+                                {{ add_form.csrf_token }}
+                                {{ wtf.quick_form(add_form, button_map={'submit': 'btn btn-outline-primary'}) }}
+                            </form>
+                        </div>
+
+                        {% set item_info = {
+                            'Price': '£{}'.format(item.price),
+                            'Description': item.description,
+                            'Environment impact': item.env_impact,
+                        } %}
+
+                        {% for key, value in item_info.items() %}
+                            <div class="row text-secondary text-left my-1">
+                                <div class="col"><h5>{{ key }}</h5></div>
+                                <div class="col"><h5>{{ value }}</h5></div>
+                            </div>
+                        {% endfor %}
+                        
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

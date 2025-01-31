@@ -1,0 +1,28 @@
+.image__img {
+    width: 5em;
+    height: auto;
+    margin: 0;
+    padding: 0;
+}
+
+.search__input {
+    width: 30vw !important;
+    height: 3em;
+}
+
+.dropdown__btn {
+    height: 3em;
+}
+
+.custom--margin {
+    margin-bottom: 9em;
+}
+
+.image-container__block {
+    width: 100%;
+    height: auto;
+    max-height: 50vh; /* Adjust the maximum height to suit larger screens */
+    overflow: hidden;
+    margin: 0;
+    padding: 0;   
+}
