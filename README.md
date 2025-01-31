@@ -8,6 +8,7 @@ Shopio is a simple, fully functional e-commerce website built with Flask, HTML, 
 - Add products to shopping cart
 - View and modify cart items
 - Simple checkout process
+- Create an account. Log in and out.
 - Responsive design for mobile and desktop views
 
 ## Screenshots
@@ -16,7 +17,7 @@ Shopio is a simple, fully functional e-commerce website built with Flask, HTML, 
 _The homepage showcasing products._
 
 ![Product Page](./imgs/sc5.png)
-_A product detail page displaying more information and an option to add to cart._
+_A product detail page displaying more information and an option to add to basket._
 
 ![Shopping Cart](./imgs/sc3.png)
 _The shopping cart page where users can view their selected items._
